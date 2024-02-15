@@ -1,3 +1,5 @@
+import logging
+
 def get_logger(name):
     log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
     logging.basicConfig(level=logging.DEBUG,
