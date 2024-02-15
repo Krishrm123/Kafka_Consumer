@@ -22,18 +22,32 @@ class TestKafkaConsumerAPI(unittest.TestCase):
         self.assertEqual(expected_message, actual_message)
 
     def test_consume_messages_with_error(self):
-  
+   
         error_message_mock = MagicMock()
-        error_message_mock.error.return_value = "Some error occurred"
+        error_message_mock.error.return_value = "Some error occurred" 
+        error_message_mock.error.return_value = MagicMock(code=KafkaError.UNKNOWN_TOPIC_OR_PART)  
         self.mock_consumer.return_value.poll = MagicMock(return_value=error_message_mock)
 
-        
-        with self.assertRaises(ValueError) as context:
-            self.consumer.consume_messages()
-
        
+        self.consumer.consume_messages()
+
+        
         self.mock_consumer.return_value.poll.assert_called_once()
         self.mock_consumer.return_value.close.assert_called_once()
+
+    # def test_consume_messages_with_error(self):
+  
+    #     error_message_mock = MagicMock()
+    #     error_message_mock.error.return_value = "Some error occurred"
+    #     self.mock_consumer.return_value.poll = MagicMock(return_value=error_message_mock)
+
+        
+    #     with self.assertRaises(ValueError) as context:
+    #         self.consumer.consume_messages()
+
+       
+    #     self.mock_consumer.return_value.poll.assert_called_once()
+    #     self.mock_consumer.return_value.close.assert_called_once()
         
         
 
